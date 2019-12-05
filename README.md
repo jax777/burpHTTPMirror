@@ -29,5 +29,5 @@ Connection: close
 Referer: https://github.com/jax777
 If-Modified-Since: Wed, 12 Dec 2018 18:17:07 GMT
 Cache-Control: max-age=0
-x-scheme-serve: https://github.githubassets.com
+X-Scheme-Server: https://github.githubassets.com
 ```

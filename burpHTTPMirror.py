@@ -30,7 +30,7 @@ class BurpExtender(IBurpExtender, IHttpListener):
             server = messageInfo.getHttpService().toString()
             analyzedRequest = self._helpers.analyzeRequest(request)
 
-            x_scheme_server = "x-scheme-serve: " + server
+            x_scheme_server = "X-Scheme-Server: " + server
 
             body = request[analyzedRequest.getBodyOffset():].tostring()
             mod_req = request[:analyzedRequest.getBodyOffset()-2].tostring() + x_scheme_server + '\r\n\r\n' + body
