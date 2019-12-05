@@ -26,10 +26,22 @@ class BurpExtender(IBurpExtender, IHttpListener):
     def processHttpMessage(self, toolFlag, messageIsRequest, messageInfo):
         if not messageIsRequest:
             # on resp
-            resquest = messageInfo.getRequest()
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect(('127.0.0.1', 18080))
-            s.sendall(resquest.tostring())
-            s.close()
+            request = messageInfo.getRequest()
+            server = messageInfo.getHttpService().toString()
+            analyzedRequest = self._helpers.analyzeRequest(request)
+
+            x_scheme_server = "x-scheme-serve: " + server
+
+            body = request[analyzedRequest.getBodyOffset():].tostring()
+            mod_req = request[:analyzedRequest.getBodyOffset()-2].tostring() + x_scheme_server + '\r\n\r\n' + body
+
+
+            try:
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.connect(('127.0.0.1', 18080))
+                s.sendall(mod_req)
+                s.close()
+            except:
+                pass
 
             
